@@ -12,6 +12,7 @@ const leaders = {
     { rank: '04', name: 'Helix Health', ticker: 'DEMO·HLX', sector: '헬스케어', rs: '85', note: '실적 발표 D-6' }
   ]
 };
+const API_BASE = window.MARKET_NOTE_API_BASE || '';
 
 const date = new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }).format(new Date());
 document.querySelector('#todayLabel').textContent = `${date} · DAILY BRIEF`;
@@ -72,7 +73,7 @@ document.querySelector('#saveJournal').addEventListener('click', async () => {
   localStorage.setItem('market-note-invalid', invalidNote.value.trim());
   const status = document.querySelector('#saveStatus');
   try {
-    const response = await fetch('/api/predictions', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ thesis: marketNote.value, invalidation: invalidNote.value, probability: Number(probability.value) }) });
+    const response = await fetch(`${API_BASE}/api/predictions`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ thesis: marketNote.value, invalidation: invalidNote.value, probability: Number(probability.value) }) });
     if (!response.ok) throw new Error();
     status.textContent = '서버에 저장되었습니다. 결과가 나온 뒤 복기해보세요.';
   } catch { status.textContent = '브라우저에 저장했습니다. 서버 실행 시 예측표에도 저장됩니다.'; }
@@ -91,7 +92,7 @@ document.querySelectorAll('[data-term]').forEach(button => button.addEventListen
 async function loadLiveSources() {
   const names = {fred:'FRED',dart:'DART',korea:'공공데이터',sec:'SEC',telegram:'Telegram'};
   try {
-    const response = await fetch('/api/status'); if (!response.ok) throw new Error();
+    const response = await fetch(`${API_BASE}/api/status`); if (!response.ok) throw new Error();
     const data = await response.json();
     document.querySelector('#apiUpdated').textContent = `마지막 확인 ${new Date(data.updated_at).toLocaleTimeString('ko-KR')}`;
     document.querySelectorAll('#sourceChips span').forEach(chip => {
@@ -133,8 +134,9 @@ function renderEvents(name) {
   const events = [...company.sell_events].sort((a,b) => b.date.localeCompare(a.date)).slice(0,4);
   document.querySelector('#eventTimeline').innerHTML = events.map(event => {
     const filing = event.disclosures?.[0];
-    const macro = event.macro?.map(x => `${x.label} ${x.value}`).join(' · ') || '인접 매크로 관측치 없음';
-    return `<article class="sell-event"><time>${dateLabel(event.date)}</time><strong>${signed(event.return)}</strong><b>${event.classification}</b><p>거래대금 ${event.turnover_multiple}배<br>${macro}</p>${filing ? `<a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${filing.receipt}" target="_blank" rel="noopener">${filing.title} ↗</a>` : '<p>±5일 중요 공시 없음</p>'}</article>`;
+    const macro = event.macro?.map(x => `${x.label} ${x.change_5obs >= 0 ? '+' : ''}${x.change_5obs}`).join(' · ') || '인접 매크로 관측치 없음';
+    const telegram = event.telegram?.length ? ` · Telegram ${event.telegram.length}건` : '';
+    return `<article class="sell-event"><time>${dateLabel(event.date)}</time><strong>${signed(event.return)}</strong><b>${event.classification}</b><p>거래대금 ${event.turnover_multiple}배${telegram}<br>${macro}</p><details><summary>해석과 반대 근거</summary><p>${event.interpretation}</p><p><b>대안:</b> ${event.alternative}</p><p><b>무효화:</b> ${event.invalidation}</p></details>${filing ? `<a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${filing.receipt}" target="_blank" rel="noopener">${filing.title} ↗</a>` : '<p>±5일 중요 공시 없음</p>'}</article>`;
   }).join('') || '<p>조건에 해당하는 강한 매도 사건이 없습니다.</p>';
 }
 
@@ -142,7 +144,7 @@ async function loadSemiconductorAnalysis(force = false) {
   const target = document.querySelector('#cycleAsOf');
   try {
     if (force) target.textContent = '근거 다시 계산 중…';
-    const response = await fetch(`/api/analysis/semiconductor${force ? `?t=${Date.now()}` : ''}`); if (!response.ok) throw new Error();
+    const response = await fetch(`${API_BASE}/api/analysis/semiconductor${force ? `?t=${Date.now()}` : ''}`); if (!response.ok) throw new Error();
     semiconductorData = await response.json(); if (!semiconductorData.connected) throw new Error();
     target.textContent = `${dateLabel(semiconductorData.companies[0]?.as_of)} 기준 · ${semiconductorData.mode}`;
     document.querySelector('#semiconductorConclusion').textContent = semiconductorData.conclusion;

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: market-note-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 server.py
+    healthCheckPath: /api/status
+    envVars:
+      - key: MARKET_NOTE_HOST
+        value: 0.0.0.0
+      - key: MARKET_NOTE_PORT
+        value: 10000
+      - key: MARKET_NOTE_USER_AGENT
+        sync: false
+      - key: FRED_API_KEY
+        sync: false
+      - key: DART_API_KEY
+        sync: false
+      - key: DATA_GO_KR_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
