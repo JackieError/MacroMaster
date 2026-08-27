@@ -32,7 +32,7 @@
         </nav>
         <div class="sidebar-foot">
           <span class="status-dot"></span>
-          <div><b>DEMO MODE</b><small>샘플 데이터 사용 중</small></div>
+          <div><b id="dataModeLabel">연결 확인 중</b><small id="dataModeDetail">API 상태를 읽고 있습니다</small></div>
         </div>
       </aside>
 
@@ -57,7 +57,7 @@
 
           <div class="temperature-grid">
             <article class="regime-card dark-card">
-              <div class="card-top"><span>MARKET REGIME</span><span class="pill positive">위험 선호</span></div>
+              <div class="card-top"><span>MARKET REGIME · SAMPLE MODEL</span><span class="pill positive">예시 점수</span></div>
               <div class="gauge-wrap">
                 <div class="gauge"><div class="gauge-fill"></div><span class="gauge-value">68</span></div>
                 <div><h3>조심스러운 상승장</h3><p>주식은 강하지만 금리 부담이 남아 있어요. 지수보다 강한 업종에 선택적으로 접근할 구간입니다.</p></div>
@@ -108,7 +108,7 @@
         <section class="section" id="leaders">
           <div class="section-heading">
             <div><span class="section-no">02</span><h2>가격이 말해주는 주도주</h2></div>
-            <p>이름을 추천받는 대신, 강한 이유와 무효화 조건을 함께 봅니다.</p>
+            <p>현재 목록은 UI 예시입니다. 실제 주도주 스크리너 연결 전에는 투자 판단에 사용하지 않습니다.</p>
           </div>
           <div class="leaders-layout">
             <div class="leader-table-wrap">
@@ -133,7 +133,7 @@
         </section>
 
         <section class="section" id="pulse">
-          <div class="section-heading"><div><span class="section-no">03</span><h2>텔레그램 분위기 레이더</h2></div><p>메시지를 신호가 아닌 가설로 취급하고, 쏠림과 반대 근거를 함께 확인합니다.</p></div>
+          <div class="section-heading"><div><span class="section-no">03</span><h2>텔레그램 분위기 레이더</h2></div><p>아래 분위기 수치는 샘플입니다. 실제 메시지는 충분한 표본이 쌓인 뒤 집계합니다.</p></div>
           <div class="pulse-grid">
             <article class="pulse-score dark-card"><div class="card-top"><span>MESSAGE PULSE · 24H</span><span class="pill positive">관심 확산</span></div><strong>+24<small>%</small></strong><h3>낙관 우세, 과열은 아직</h3><p>반도체·전력 인프라 언급이 빠르게 늘었습니다. 다만 같은 자료가 반복 전달된 비중이 높아 실제 정보량은 표시된 메시지 수보다 적습니다.</p><div class="sentiment-bar"><i style="width:62%"></i><span>낙관 62</span><span>중립 25</span><span>경계 13</span></div></article>
             <article class="theme-radar"><div class="radar-head"><span>급상승 주제</span><small>중복 제거 · 샘플 186건</small></div><div class="theme-item"><b>01</b><div><strong>HBM 공급망</strong><small>실적 추정 · 증설 · 납기</small></div><em>+41%</em></div><div class="theme-item"><b>02</b><div><strong>전력망 투자</strong><small>변압기 · 데이터센터 · 수주</small></div><em>+28%</em></div><div class="theme-item"><b>03</b><div><strong>바이오 기술이전</strong><small>마일스톤 · 임상 일정</small></div><em>+17%</em></div></article>

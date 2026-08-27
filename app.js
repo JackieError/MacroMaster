@@ -94,6 +94,9 @@ async function loadLiveSources() {
   try {
     const response = await fetch(`${API_BASE}/api/status`); if (!response.ok) throw new Error();
     const data = await response.json();
+    const connectedCount = Object.values(data.sources).filter(source => source?.connected).length;
+    document.querySelector('#dataModeLabel').textContent = 'LIVE + SAMPLE';
+    document.querySelector('#dataModeDetail').textContent = `실데이터 ${connectedCount}개 소스 · 예시 영역 구분`;
     document.querySelector('#apiUpdated').textContent = `마지막 확인 ${new Date(data.updated_at).toLocaleTimeString('ko-KR')}`;
     document.querySelectorAll('#sourceChips span').forEach(chip => {
       const key = Object.keys(names).find(k => names[k] === chip.textContent); const source = data.sources[key];
@@ -101,12 +104,25 @@ async function loadLiveSources() {
     });
     const fred = data.sources.fred;
     if (fred?.connected && fred.series?.length) {
-      const ten = fred.series.find(x => x.id === 'DGS10'), vix = fred.series.find(x => x.id === 'VIXCLS');
+      const ten = fred.series.find(x => x.id === 'DGS10'), dollar = fred.series.find(x => x.id === 'DTWEXBGS'), vix = fred.series.find(x => x.id === 'VIXCLS');
       const values = document.querySelectorAll('.metric-card>strong');
+      const changes = document.querySelectorAll('.metric-card>.change');
       if (ten && values[0]) values[0].innerHTML = `${ten.value.toFixed(2)}<small>%</small>`;
+      if (dollar && values[1]) values[1].textContent = dollar.value.toFixed(2);
       if (vix && values[2]) values[2].textContent = vix.value.toFixed(1);
+      if (ten?.history?.length > 1 && changes[0]) {
+        const diff = ten.history.at(-1) - ten.history.at(-2); changes[0].textContent = `${diff >= 0 ? '▲' : '▼'} ${Math.abs(diff).toFixed(2)}%p`; changes[0].className = `change ${diff <= 0 ? 'up' : 'down'}`;
+      }
+      [[dollar, changes[1]], [vix, changes[2]]].forEach(([series, element]) => {
+        if (!series?.history?.length || series.history.length < 2 || !element) return;
+        const before = series.history.at(-2), diff = (series.history.at(-1) / before - 1) * 100; element.textContent = `${diff >= 0 ? '▲' : '▼'} ${Math.abs(diff).toFixed(2)}%`; element.className = `change ${diff <= 0 ? 'up' : 'down'}`;
+      });
     }
-  } catch { document.querySelector('#apiUpdated').textContent = '정적 모드 · server.py로 실행하면 연결됩니다.'; }
+  } catch {
+    document.querySelector('#apiUpdated').textContent = 'API 연결 실패 · 샘플 화면만 표시됩니다.';
+    document.querySelector('#dataModeLabel').textContent = 'SAMPLE MODE';
+    document.querySelector('#dataModeDetail').textContent = '실데이터 API에 연결할 수 없음';
+  }
 }
 loadLiveSources();
 
