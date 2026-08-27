@@ -23,6 +23,7 @@
 
 - `https://jackieerror.github.io/market-study-dashboard/`
 - `https://jackieerror.github.io/MacroMaster/`
+- API: `https://market-note-api.onrender.com`
 
 두 저장소에는 동일한 정적 앱 코드가 들어 있다. API 키와 `market_note.db`는 포함되지 않는다.
 
@@ -41,7 +42,7 @@
 4. 근거가 있는 자연어 브리핑
    - 사실/해석/가설/무효화 조건 분리
    - 문장별 출처와 데이터 기준일
-5. Python 백엔드 온라인 배포와 Pages API 연결
+5. 온라인 저장소를 SQLite에서 영구 PostgreSQL로 이전
 
 ## 알려진 제약
 
