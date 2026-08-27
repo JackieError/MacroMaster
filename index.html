@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="features.css" />
     <link rel="stylesheet" href="academy.css" />
     <link rel="stylesheet" href="redesign.css" />
+    <link rel="stylesheet" href="cycle.css" />
   </head>
   <body>
     <div class="shell">
@@ -21,6 +22,7 @@
         </a>
         <nav aria-label="주 메뉴">
           <a class="nav-link active" href="#brief"><span>01</span>오늘의 브리핑</a>
+          <a class="nav-link" href="#cycle"><span>02</span>장기 사이클</a>
           <a class="nav-link" href="#leaders"><span>02</span>주도주 관찰</a>
           <a class="nav-link" href="#pulse"><span>03</span>분위기 레이더</a>
           <a class="nav-link" href="#reports"><span>04</span>리포트 서재</a>
@@ -91,6 +93,16 @@
             <p>금리가 올랐는데도 달러와 변동성이 크게 움직이지 않았습니다. 시장 전체가 위험을 회피하기보다, 실적이 확인되는 성장주로 자금이 좁혀지는지 확인해 보세요.</p>
             <label class="routine-check"><input type="checkbox" data-task="brief" /><span></span>브리핑을 읽고 오늘의 시장을 한 문장으로 요약했다</label>
           </article>
+        </section>
+
+        <section class="section cycle-section" id="cycle">
+          <div class="section-heading"><div><span class="section-no">02</span><h2>반도체 2년 사이클</h2></div><p>삼성전자와 SK하이닉스의 장기 흐름에서 기대가 꺾인 날짜와 주변 사건을 함께 봅니다.</p></div>
+          <div class="cycle-toolbar"><div class="horizon-tabs"><button data-horizon="1m">1개월</button><button data-horizon="3m">3개월</button><button data-horizon="1y">1년</button><button class="active" data-horizon="2y">2년</button></div><span id="cycleAsOf">실데이터 계산 중…</span></div>
+          <div id="companyCycles" class="company-cycles"><article class="cycle-loading">490거래일 가격·거래대금·공시·매크로를 결합하고 있습니다.</article></div>
+          <article class="event-study"><div class="event-head"><div><span class="mini-label">SELL-OFF STUDY</span><h3>시장이 강하게 실망한 날짜와 근거</h3></div><select id="eventCompany" aria-label="기업 선택"><option>삼성전자</option><option>SK하이닉스</option></select></div><div id="eventTimeline" class="event-timeline"><p>분석 데이터를 기다리는 중입니다.</p></div></article>
+          <article class="deep-conclusion"><span>현재 해석</span><p id="semiconductorConclusion">가격 데이터가 도착하면 사실과 해석을 분리해 표시합니다.</p><small id="semiconductorMethod"></small></article>
+          <div class="analysis-caution"><b>해석 주의</b><span>공시와 하락일이 가깝다는 사실만으로 공시가 하락의 원인이라고 단정하지 않습니다.</span><span>수정주가가 아닌 데이터는 액면분할·기업행사로 장기 수익률이 왜곡될 수 있습니다.</span><span>컨센서스 자료가 없으면 “예상보다 부진”이라는 표현을 사용하지 않습니다.</span></div>
+          <label class="routine-check inline-check"><input type="checkbox" data-task="cycle" /><span></span>한 기업의 장기 흐름과 주요 매도 사건을 확인했다</label>
         </section>
 
         <section class="section" id="leaders">

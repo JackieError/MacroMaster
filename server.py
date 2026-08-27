@@ -8,6 +8,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlencode, urlparse
 import requests
+from analysis_engine import attach_evidence, company_metrics, normalize_bars, pair_conclusion
 
 ROOT = Path(__file__).resolve().parent
 DB = ROOT / "market_note.db"
@@ -97,6 +98,34 @@ def telegram():
         if text: msgs.append({"id":m.get("message_id"),"date":m.get("date"),"chat":m.get("chat",{}).get("title") or m.get("chat",{}).get("username","개인"),"text":text[:1000]})
     return {"connected":True,"count":len(msgs),"items":msgs[-30:]}
 
+COMPANIES={"005930":{"name":"삼성전자","corp_code":"00126380"},"000660":{"name":"SK하이닉스","corp_code":"00164779"}}
+
+def company_bars(code):
+    key=unquote(env("DATA_GO_KR_KEY"))
+    start=datetime.fromtimestamp(time.time()-740*86400).strftime("%Y%m%d")
+    data=get_json("https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo", {"serviceKey":key,"numOfRows":700,"pageNo":1,"resultType":"json","likeSrtnCd":code,"beginBasDt":start})
+    return normalize_bars(data.get("response",{}).get("body",{}).get("items",{}).get("item",[]))
+
+def company_disclosures(corp_code):
+    key=env("DART_API_KEY"); end=datetime.now().strftime("%Y%m%d"); start=datetime.fromtimestamp(time.time()-740*86400).strftime("%Y%m%d")
+    data=get_json("https://opendart.fss.or.kr/api/list.json", {"crtfc_key":key,"corp_code":corp_code,"bgn_de":start,"end_de":end,"page_count":100})
+    return data.get("list",[])
+
+def macro_history():
+    key=env("FRED_API_KEY"); out=[]
+    for sid,label in {"DGS10":"미 10년물","DTWEXBGS":"달러지수","VIXCLS":"VIX"}.items():
+        d=get_json("https://api.stlouisfed.org/fred/series/observations", {"series_id":sid,"api_key":key,"file_type":"json","sort_order":"desc","limit":600})
+        obs=[{"date":x["date"],"value":float(x["value"])} for x in d.get("observations",[]) if x.get("value") != "."]
+        out.append({"id":sid,"label":label,"observations":obs})
+    return out
+
+def semiconductor_cycle():
+    macro=macro_history(); companies=[]
+    for code,meta in COMPANIES.items():
+        metrics=company_metrics(meta["name"],code,company_bars(code))
+        companies.append(attach_evidence(metrics,company_disclosures(meta["corp_code"]),macro))
+    return {"connected":True,"as_of":now(),"sector":"반도체 대형주","companies":companies,"conclusion":pair_conclusion(companies),"method":"삼성전자·SK하이닉스 동일 관찰 바스켓. KOSPI 섹터지수 대체물이 아니며 시장 대비 상대강도는 지수 API 연결 후 추가됩니다."}
+
 LOADERS={"fred":(3600,fred),"dart":(900,dart),"korea":(21600,korea_prices),"sec":(3600,sec),"telegram":(300,telegram)}
 
 class Handler(SimpleHTTPRequestHandler):
@@ -110,6 +139,8 @@ class Handler(SimpleHTTPRequestHandler):
             for name,(ttl,loader) in LOADERS.items():
                 value,mode=cached(name,ttl,loader); result["sources"][name]={"mode":mode,**value}
             return self.send_json(result)
+        if path == "/api/analysis/semiconductor":
+            value,mode=cached("semiconductor",21600,semiconductor_cycle); return self.send_json({"mode":mode,**value})
         if path == "/api/predictions":
             con=db(); rows=con.execute("select id,created,thesis,probability,invalidation,result from predictions order by id desc limit 30").fetchall(); con.close()
             return self.send_json({"items":[dict(zip(("id","created","thesis","probability","invalidation","result"),r)) for r in rows]})

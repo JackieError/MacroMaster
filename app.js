@@ -109,6 +109,53 @@ async function loadLiveSources() {
 }
 loadLiveSources();
 
+let semiconductorData;
+let selectedHorizon = '2y';
+const signed = value => value == null ? '—' : `${value > 0 ? '+' : ''}${Number(value).toFixed(1)}%`;
+const dateLabel = value => value && value.length === 8 ? `${value.slice(0,4)}.${value.slice(4,6)}.${value.slice(6)}` : value;
+
+function renderCompanies() {
+  if (!semiconductorData?.companies) return;
+  document.querySelector('#companyCycles').innerHTML = semiconductorData.companies.map(company => {
+    const focus = company.returns[selectedHorizon];
+    return `<article class="company-cycle">
+      <div class="company-top"><div><small>${company.code} · ${company.sessions}거래일</small><h3>${company.name}</h3></div><span class="phase-badge">${company.phase}</span></div>
+      <div class="return-focus ${focus >= 0 ? 'positive' : 'negative'}"><strong>${signed(focus)}</strong><span>${selectedHorizon.toUpperCase()} 누적 변화</span></div>
+      <div class="return-grid">${['1m','3m','1y','2y'].map(h => `<div><span>${h.toUpperCase()}</span><b>${signed(company.returns[h])}</b></div>`).join('')}</div>
+      <div class="trend-facts"><span>고점 대비 <b>${signed(company.drawdown)}</b></span><span>50일선 <b>${company.above_ma50 ? '위' : '아래'}</b></span><span>200일선 <b>${company.above_ma200 ? '위' : '아래'}</b></span><span>변동성 <b>${company.annualized_volatility}%</b></span></div>
+    </article>`;
+  }).join('');
+}
+
+function renderEvents(name) {
+  const company = semiconductorData?.companies?.find(x => x.name === name);
+  if (!company) return;
+  const events = [...company.sell_events].sort((a,b) => b.date.localeCompare(a.date)).slice(0,4);
+  document.querySelector('#eventTimeline').innerHTML = events.map(event => {
+    const filing = event.disclosures?.[0];
+    const macro = event.macro?.map(x => `${x.label} ${x.value}`).join(' · ') || '인접 매크로 관측치 없음';
+    return `<article class="sell-event"><time>${dateLabel(event.date)}</time><strong>${signed(event.return)}</strong><b>${event.classification}</b><p>거래대금 ${event.turnover_multiple}배<br>${macro}</p>${filing ? `<a href="https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${filing.receipt}" target="_blank" rel="noopener">${filing.title} ↗</a>` : '<p>±5일 중요 공시 없음</p>'}</article>`;
+  }).join('') || '<p>조건에 해당하는 강한 매도 사건이 없습니다.</p>';
+}
+
+async function loadSemiconductorAnalysis(force = false) {
+  const target = document.querySelector('#cycleAsOf');
+  try {
+    if (force) target.textContent = '근거 다시 계산 중…';
+    const response = await fetch(`/api/analysis/semiconductor${force ? `?t=${Date.now()}` : ''}`); if (!response.ok) throw new Error();
+    semiconductorData = await response.json(); if (!semiconductorData.connected) throw new Error();
+    target.textContent = `${dateLabel(semiconductorData.companies[0]?.as_of)} 기준 · ${semiconductorData.mode}`;
+    document.querySelector('#semiconductorConclusion').textContent = semiconductorData.conclusion;
+    document.querySelector('#semiconductorMethod').textContent = semiconductorData.method;
+    renderCompanies(); renderEvents(document.querySelector('#eventCompany').value);
+  } catch { target.textContent = '로컬 API 서버에서만 실데이터 분석이 제공됩니다.'; }
+}
+document.querySelectorAll('[data-horizon]').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('[data-horizon]').forEach(x => x.classList.remove('active')); button.classList.add('active'); selectedHorizon = button.dataset.horizon; renderCompanies();
+}));
+document.querySelector('#eventCompany').addEventListener('change', event => renderEvents(event.target.value));
+loadSemiconductorAnalysis();
+
 const sections = [...document.querySelectorAll('main section')];
 const links = [...document.querySelectorAll('.nav-link')];
 const observer = new IntersectionObserver(entries => entries.forEach(entry => {
