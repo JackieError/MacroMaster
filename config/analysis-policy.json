@@ -1,0 +1,14 @@
+{
+  "horizons": ["2y", "1y", "3m", "1m"],
+  "claim_types": ["fact", "interpretation", "hypothesis", "invalidation"],
+  "required_evidence": ["source", "effective_date", "observed_at"],
+  "sector_phases": ["base", "recovery", "expansion", "overheat", "slowdown"],
+  "event_windows": [-20, -5, 0, 1, 5, 20],
+  "rules": {
+    "causal_language_requires_event_evidence": true,
+    "consensus_without_source": "unavailable",
+    "stale_data_must_be_labeled": true,
+    "telegram_sentiment_is_not_trade_signal": true,
+    "paid_report_bypass": false
+  }
+}
