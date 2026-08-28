@@ -1,5 +1,7 @@
 # Market Note
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FJackieError%2Fmarket-study-dashboard)
+
 매일 시장을 읽는 순서를 안내하는 투자 학습용 정적 웹페이지입니다.
 
 ## 실행
@@ -29,4 +31,8 @@ open -e .env
 
 저장한 뒤 서버를 재시작합니다. Telegram Bot API는 봇이 추가된 대화와 봇에게 전달한 메시지만 읽을 수 있습니다.
 
-현재 숫자와 종목은 UI 검증을 위한 샘플이며 실제 투자 데이터가 아닙니다. 체크리스트와 투자 기록은 브라우저 `localStorage`에 저장됩니다.
+현재 일부 카드는 UI 검증용 샘플이며, 로컬 API 서버 연결 시 실제 데이터 상태와 삼성전자·SK하이닉스 장기 분석이 표시됩니다. 체크리스트와 투자 기록은 브라우저 `localStorage`에도 저장됩니다.
+
+## 온라인 API 배포
+
+위의 **Deploy to Render** 버튼을 누르면 저장소의 `render.yaml`을 사용해 Python 분석 서버를 생성할 수 있습니다. 자세한 절차는 [RENDER_SETUP.md](RENDER_SETUP.md)에 있습니다.

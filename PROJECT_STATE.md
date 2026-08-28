@@ -1,6 +1,6 @@
 # Project state
 
-최종 갱신: 2026-08-27
+최종 갱신: 2026-08-28
 
 ## 구현 완료
 
@@ -14,12 +14,17 @@
 - FRED·DART·SEC·공공데이터 실제 응답 검증
 - Telegram 봇 `@macroerrorbot` 연결 확인
 - GitHub 저장소와 Pages 배포
+- 삼성전자·SK하이닉스 490거래일 장기 분석 엔진
+- 1개월·3개월·1년·2년 수익률, 50/200일 추세, 낙폭, 변동성 계산
+- 고거래대금 매도 변곡일과 ±5일 DART 공시·FRED 관측치 결합
+- 반도체 2년 사이클 및 기업별 사건 타임라인 화면
 
 ## 현재 배포
 
 - `https://jackieerror.github.io/market-study-dashboard/` — Market Note 대시보드
 - `https://jackieerror.github.io/MacroMaster/` — 같은 대시보드
-- `https://jackieerror.github.io/MacroMaster/curriculum/` — 매크로 사례 학습 커리큘럼 (신규)
+- `https://jackieerror.github.io/MacroMaster/curriculum/` — 매크로 사례 학습 커리큘럼
+- API: `https://market-note-api.onrender.com`
 
 API 키와 `market_note.db`는 포함되지 않는다.
 
@@ -40,20 +45,20 @@ API 키와 `market_note.db`는 포함되지 않는다.
 
 ## 진행해야 할 핵심 작업
 
-1. 장기 섹터 사이클 엔진
-   - 2년/1년/3개월/1개월 수익률과 상대강도
-   - 고점 대비 낙폭, 50·200일 추세, 거래대금 변화
-   - 바닥·회복·확산·과열·둔화 단계 분류
-2. 사건 연구 엔진
-   - 가격 변곡일 탐지
-   - 변곡일 전후 DART·SEC·Telegram·매크로 사건 결합
-   - 기대와 실제의 차이, 실망 매도, 악재 둔감 구간 판별
-3. 기업 분석
+1. 장기 섹터 사이클 확장
+   - 반도체 외 전력·바이오·자동차 등 대표 기업 바스켓
+   - KOSPI 및 섹터 지수 대비 상대강도
+   - 수정주가/기업행사 보정
+2. 사건 연구 고도화
+   - Telegram·뉴스·실적 컨센서스 결합
+   - 기대와 실제의 차이, 악재 둔감 구간 판별
+3. 기업 분석 확장
    - 실적·가이던스·수주·증설·자금조달·내부자/지분 이벤트
    - 섹터 대비 상대강도와 매크로 민감도
 4. 근거가 있는 자연어 브리핑
    - 사실/해석/가설/무효화 조건 분리
    - 문장별 출처와 데이터 기준일
+5. 온라인 저장소를 SQLite에서 영구 PostgreSQL로 이전
 
 ## 알려진 제약
 
@@ -61,4 +66,3 @@ API 키와 `market_note.db`는 포함되지 않는다.
 - Bot API는 봇이 받은 이후의 메시지만 수집한다. 공개 채널 과거 전체 수집은 별도 MTProto 사용자 인증이 필요하다.
 - 무료 데이터만으로 애널리스트 컨센서스와 이익 추정치 변화 전체를 안정적으로 얻기 어렵다. 없으면 `확인 불가`로 표시한다.
 - Pages 배포본에서 `/api/*`는 작동하지 않는다. 정적 폴백을 사용한다.
-

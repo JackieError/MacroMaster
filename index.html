@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="features.css" />
     <link rel="stylesheet" href="academy.css" />
     <link rel="stylesheet" href="redesign.css" />
+    <link rel="stylesheet" href="cycle.css" />
   </head>
   <body>
     <div class="shell">
@@ -21,6 +22,7 @@
         </a>
         <nav aria-label="주 메뉴">
           <a class="nav-link active" href="#brief"><span>01</span>오늘의 브리핑</a>
+          <a class="nav-link" href="#cycle"><span>02</span>장기 사이클</a>
           <a class="nav-link" href="#leaders"><span>02</span>주도주 관찰</a>
           <a class="nav-link" href="#pulse"><span>03</span>분위기 레이더</a>
           <a class="nav-link" href="#reports"><span>04</span>리포트 서재</a>
@@ -30,7 +32,7 @@
         </nav>
         <div class="sidebar-foot">
           <span class="status-dot"></span>
-          <div><b>DEMO MODE</b><small>샘플 데이터 사용 중</small></div>
+          <div><b id="dataModeLabel">연결 확인 중</b><small id="dataModeDetail">API 상태를 읽고 있습니다</small></div>
         </div>
       </aside>
 
@@ -55,55 +57,65 @@
 
           <div class="temperature-grid">
             <article class="regime-card dark-card">
-              <div class="card-top"><span>MARKET REGIME</span><span class="pill positive">위험 선호</span></div>
+              <div class="card-top"><span>FRED MACRO RISK MODEL</span><span class="pill positive" id="regimeDate">계산 중</span></div>
               <div class="gauge-wrap">
-                <div class="gauge"><div class="gauge-fill"></div><span class="gauge-value">68</span></div>
-                <div><h3>조심스러운 상승장</h3><p>주식은 강하지만 금리 부담이 남아 있어요. 지수보다 강한 업종에 선택적으로 접근할 구간입니다.</p></div>
+                <div class="gauge"><div class="gauge-fill"></div><span class="gauge-value" id="regimeScore">—</span></div>
+                <div><h3 id="regimeTitle">실데이터 계산 중</h3><p id="regimeText">미 10년물·달러·VIX 최신 관측치를 기다리고 있습니다.</p></div>
               </div>
-              <div class="signal-row"><span><i class="up">↗</i> 추세 <b>긍정</b></span><span><i>→</i> 유동성 <b>중립</b></span><span><i class="up">↗</i> 시장폭 <b>개선</b></span></div>
+              <div class="signal-row" id="regimeSignals"><span>금리 <b>—</b></span><span>달러 <b>—</b></span><span>VIX <b>—</b></span></div>
             </article>
 
             <article class="metric-card">
               <div class="metric-title"><span>금리</span><b>미 10년물</b></div>
-              <strong>4.21<small>%</small></strong>
-              <p class="change down">▲ 0.04%p</p>
+              <strong>—</strong>
+              <p class="change">계산 중</p>
               <div class="sparkline orange"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
               <p class="why"><b>왜 보나요?</b> 금리 상승은 성장주의 미래 이익 가치를 낮출 수 있어요.</p>
             </article>
             <article class="metric-card">
               <div class="metric-title"><span>달러</span><b>달러 인덱스</b></div>
-              <strong>103.8</strong>
-              <p class="change up">▼ 0.28%</p>
+              <strong>—</strong>
+              <p class="change">계산 중</p>
               <div class="sparkline green"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
               <p class="why"><b>왜 보나요?</b> 달러 약세는 대체로 글로벌 위험자산에 우호적이에요.</p>
             </article>
             <article class="metric-card">
               <div class="metric-title"><span>변동성</span><b>VIX</b></div>
-              <strong>16.4</strong>
-              <p class="change up">▼ 3.10%</p>
+              <strong>—</strong>
+              <p class="change">계산 중</p>
               <div class="sparkline green reverse"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
               <p class="why"><b>왜 보나요?</b> 시장의 공포 수준입니다. 20 아래는 비교적 안정적인 편이에요.</p>
             </article>
           </div>
 
           <article class="connection-card">
-            <div class="connection-title"><span>오늘의 연결고리</span><h3>금리 ↑ <i>→</i> 달러 보합 <i>→</i> 성장주 선별</h3></div>
-            <p>금리가 올랐는데도 달러와 변동성이 크게 움직이지 않았습니다. 시장 전체가 위험을 회피하기보다, 실적이 확인되는 성장주로 자금이 좁혀지는지 확인해 보세요.</p>
+            <div class="connection-title"><span>실제 관측치 연결</span><h3 id="macroConnection">데이터 계산 중</h3></div>
+            <p id="macroNarrative">최신 FRED 관측치를 불러오고 있습니다.</p>
             <label class="routine-check"><input type="checkbox" data-task="brief" /><span></span>브리핑을 읽고 오늘의 시장을 한 문장으로 요약했다</label>
           </article>
+        </section>
+
+        <section class="section cycle-section" id="cycle">
+          <div class="section-heading"><div><span class="section-no">02</span><h2>반도체 2년 사이클</h2></div><p>삼성전자와 SK하이닉스의 장기 흐름에서 기대가 꺾인 날짜와 주변 사건을 함께 봅니다.</p></div>
+          <div class="cycle-toolbar"><div class="horizon-tabs"><button data-horizon="1m">1개월</button><button data-horizon="3m">3개월</button><button data-horizon="1y">1년</button><button class="active" data-horizon="2y">2년</button></div><span id="cycleAsOf">실데이터 계산 중…</span></div>
+          <div id="companyCycles" class="company-cycles"><article class="cycle-loading">490거래일 가격·거래대금·공시·매크로를 결합하고 있습니다.</article></div>
+          <article class="event-study"><div class="event-head"><div><span class="mini-label">SELL-OFF STUDY</span><h3>시장이 강하게 실망한 날짜와 근거</h3></div><select id="eventCompany" aria-label="기업 선택"><option>삼성전자</option><option>SK하이닉스</option></select></div><div id="eventTimeline" class="event-timeline"><p>분석 데이터를 기다리는 중입니다.</p></div></article>
+          <article class="deep-conclusion"><span>현재 해석</span><p id="semiconductorConclusion">가격 데이터가 도착하면 사실과 해석을 분리해 표시합니다.</p><small id="semiconductorMethod"></small></article>
+          <div class="analysis-caution"><b>해석 주의</b><span>공시와 하락일이 가깝다는 사실만으로 공시가 하락의 원인이라고 단정하지 않습니다.</span><span>수정주가가 아닌 데이터는 액면분할·기업행사로 장기 수익률이 왜곡될 수 있습니다.</span><span>컨센서스 자료가 없으면 “예상보다 부진”이라는 표현을 사용하지 않습니다.</span></div>
+          <label class="routine-check inline-check"><input type="checkbox" data-task="cycle" /><span></span>한 기업의 장기 흐름과 주요 매도 사건을 확인했다</label>
         </section>
 
         <section class="section" id="leaders">
           <div class="section-heading">
             <div><span class="section-no">02</span><h2>가격이 말해주는 주도주</h2></div>
-            <p>이름을 추천받는 대신, 강한 이유와 무효화 조건을 함께 봅니다.</p>
+            <p>삼성전자·SK하이닉스 실제 490거래일 흐름을 동일 기준으로 비교합니다.</p>
           </div>
           <div class="leaders-layout">
             <div class="leader-table-wrap">
-              <div class="tabs" role="tablist"><button class="active" data-market="kr">한국</button><button data-market="us">미국</button></div>
+              <div class="tabs"><span>반도체 대형주 실제 데이터</span></div>
               <table>
-                <thead><tr><th>순위 / 종목</th><th>분야</th><th>상대강도</th><th>추세</th><th>관찰 포인트</th></tr></thead>
-                <tbody id="leaderRows"></tbody>
+                <thead><tr><th>순위 / 종목</th><th>분야</th><th>1년 수익률</th><th>추세</th><th>관찰 포인트</th></tr></thead>
+                <tbody id="leaderRows"><tr><td colspan="5">장기 분석 데이터를 불러오고 있습니다.</td></tr></tbody>
               </table>
             </div>
             <article class="method-card">
@@ -121,20 +133,15 @@
         </section>
 
         <section class="section" id="pulse">
-          <div class="section-heading"><div><span class="section-no">03</span><h2>텔레그램 분위기 레이더</h2></div><p>메시지를 신호가 아닌 가설로 취급하고, 쏠림과 반대 근거를 함께 확인합니다.</p></div>
-          <div class="pulse-grid">
-            <article class="pulse-score dark-card"><div class="card-top"><span>MESSAGE PULSE · 24H</span><span class="pill positive">관심 확산</span></div><strong>+24<small>%</small></strong><h3>낙관 우세, 과열은 아직</h3><p>반도체·전력 인프라 언급이 빠르게 늘었습니다. 다만 같은 자료가 반복 전달된 비중이 높아 실제 정보량은 표시된 메시지 수보다 적습니다.</p><div class="sentiment-bar"><i style="width:62%"></i><span>낙관 62</span><span>중립 25</span><span>경계 13</span></div></article>
-            <article class="theme-radar"><div class="radar-head"><span>급상승 주제</span><small>중복 제거 · 샘플 186건</small></div><div class="theme-item"><b>01</b><div><strong>HBM 공급망</strong><small>실적 추정 · 증설 · 납기</small></div><em>+41%</em></div><div class="theme-item"><b>02</b><div><strong>전력망 투자</strong><small>변압기 · 데이터센터 · 수주</small></div><em>+28%</em></div><div class="theme-item"><b>03</b><div><strong>바이오 기술이전</strong><small>마일스톤 · 임상 일정</small></div><em>+17%</em></div></article>
-            <article class="counter-card"><span class="mini-label">COUNTER SIGNAL</span><h3>반대편에서 볼 것</h3><p>긍정 메시지는 늘었지만 반도체 장비주의 거래대금은 전일보다 감소했습니다. 내일 가격과 거래량이 확인되지 않으면 관심 증가를 추세 강화로 해석하지 않습니다.</p><button class="source-button">근거 메시지 12개 보기 <span>→</span></button></article>
-          </div>
+          <div class="section-heading"><div><span class="section-no">03</span><h2>텔레그램 수집 현황</h2></div><p>실제로 봇이 받은 메시지만 표시하며 표본이 부족하면 분위기를 판정하지 않습니다.</p></div>
+          <div class="pulse-grid" id="pulseContent"><article class="cycle-loading">Telegram 실데이터를 불러오고 있습니다.</article></div>
           <div class="source-rule"><b>분석 원칙</b><span>광고·포워딩 중복 제거</span><span>출처별 신뢰도 구분</span><span>사실과 의견 분리</span><span>원문 링크 보존</span></div>
           <label class="routine-check inline-check"><input type="checkbox" data-task="pulse" /><span></span>급상승 주제 하나의 원문과 반대 근거를 확인했다</label>
         </section>
 
         <section class="section reports-section" id="reports">
-          <div class="section-heading"><div><span class="section-no">04</span><h2>오늘 읽을 리포트</h2></div><p>목표주가보다 사고방식과 산업 구조를 배울 수 있는 자료를 우선합니다.</p></div>
-          <div class="report-feature"><div class="report-rank"><span>EDITOR'S PICK</span><strong>01</strong><small>입문 추천</small></div><div class="report-copy"><div class="report-meta"><span>GLOBAL BANK · THEMATIC RESEARCH</span><span>DEMO REPORT</span></div><h3>AI 데이터센터의 전력 수요를<br />어떻게 추정하는가</h3><p>산업 성장률을 주가 전망으로 바로 연결하지 않고, 서버 출하량 → 전력 소비량 → 계통 투자 → 기업 매출로 변환하는 과정을 배울 수 있는 자료입니다.</p><div class="learn-tags"><span>배울 개념</span><b>TAM 추정</b><b>병목 분석</b><b>민감도 분석</b></div></div><div class="reading-guide"><span class="mini-label">READING GUIDE</span><ol><li>핵심 가정 세 개에 밑줄 긋기</li><li>낙관·기준·비관 시나리오 비교</li><li>수혜가 매출로 연결되는 시점 찾기</li></ol><button>공식 원문 확인 <span>↗</span></button></div></div>
-          <div class="report-list"><article><span>02 · MACRO</span><h3>장기금리 상승을 분해하는 법</h3><p>기대 인플레이션과 실질금리의 차이를 학습</p><small>예상 읽기 12분</small></article><article><span>03 · STRATEGY</span><h3>시장폭으로 랠리의 질 판단하기</h3><p>지수 상승과 개별 종목 참여도의 괴리를 학습</p><small>예상 읽기 9분</small></article><article><span>04 · INDUSTRY</span><h3>반도체 사이클의 선행지표</h3><p>재고·가동률·가격·주문의 순서를 학습</p><small>예상 읽기 14분</small></article></div>
+          <div class="section-heading"><div><span class="section-no">04</span><h2>오늘 확인할 실제 공시</h2></div><p>DART와 SEC에서 현재 수신된 문서만 제공합니다.</p></div>
+          <div class="report-list" id="liveReports"><article>실제 공시를 불러오고 있습니다.</article></div>
           <label class="routine-check inline-check"><input type="checkbox" data-task="reports" /><span></span>추천 자료 하나를 읽고 핵심 가정 한 가지를 적었다</label>
         </section>
 
@@ -195,9 +202,10 @@
           <label class="routine-check inline-check"><input type="checkbox" data-task="journal" /><span></span>오늘의 판단과 무효화 조건을 기록했다</label>
         </section>
 
-        <footer><b>MARKET NOTE</b><p>이 페이지는 투자 판단을 위한 학습 도구이며, 특정 금융상품의 매수·매도를 권유하지 않습니다.</p><span>DATA · DEMO</span></footer>
+        <footer><b>MARKET NOTE</b><p>이 페이지는 투자 판단을 위한 학습 도구이며, 특정 금융상품의 매수·매도를 권유하지 않습니다.</p><span>LIVE DATA</span></footer>
       </main>
     </div>
+    <script src="config.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
