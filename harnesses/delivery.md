@@ -16,6 +16,6 @@ Pages 링크:
 
 - `https://jackieerror.github.io/market-study-dashboard/`
 - `https://jackieerror.github.io/MacroMaster/`
+- `https://jackieerror.github.io/MacroMaster/investmaster/` — InvestMaster 투자학교
 
 정적 배포에서는 API가 작동하지 않는다. 백엔드 배포 전에는 정적 데이터가 실시간인 것처럼 표시되지 않게 한다.
-

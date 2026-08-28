@@ -1,0 +1,33 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="차트에서 먼저 움직인 자산과 시장의 선반영을 찾는 매크로 투자 Case Study 워크스페이스"><title>실습하기 — InvestMaster</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"></head><body class="practice-body">
+<header class="topbar practice-top"><a class="brand" href="index.html"><span>IM</span><b>INVESTMASTER</b></a><nav><a href="index.html">학교 소개</a><a href="curriculum.html">커리큘럼</a><a class="active" href="practice.html">실습하기</a><a href="masters.html">거장 연구실</a><a href="system.html">내 투자 시스템</a></nav><div class="practice-actions"><button id="themeToggle" aria-label="색상 모드 변경">◐</button><button id="blindToggle"><i></i> BLIND OFF</button></div></header>
+<main class="practice-shell">
+  <aside class="practice-left">
+    <p class="side-label">WORKSPACE</p><nav class="workspace-nav"><button class="active" data-view="case">▦ <span>Case Study</span></button><button data-view="current">◉ <span>Current Market</span><small>DATA 연결 전</small></button><button data-view="library">⌕ <span>Case Library</span></button><button data-view="notebook">▤ <span>My Notebook</span></button><button data-view="blind">◌ <span>Blind Test</span></button><button data-view="symbols">⌘ <span>Market Symbols</span></button><button data-view="weakness">△ <span>My Weaknesses</span></button></nav>
+    <div class="case-mini"><p class="side-label">ACTIVE CASE</p><b id="sideCaseTitle">2023 AI Rally</b><span id="sideCasePeriod">2022.10 — 2023.08</span><div><i id="caseProgressBar"></i></div><small id="caseProgressText">1 / 10 LENS</small></div>
+    <blockquote>“가격을 먼저 보고<br>뉴스를 나중에 본다.”</blockquote>
+  </aside>
+
+  <section class="practice-main">
+    <div id="workspaceView">
+      <header class="case-header"><div><p class="eyebrow" id="caseEyebrow">CASE 001 · HISTORICAL</p><h1 id="caseTitle">2023 AI Rally</h1><p id="caseIntro">금리 부담 속에서 시작된 선택적 기술주 랠리. 아직 사건명보다 차트의 순서를 먼저 보세요.</p></div><div class="case-period"><small>ANALYSIS WINDOW</small><b id="casePeriod">OCT 2022 — AUG 2023</b><span>Observed month-end data · Base 100</span></div></header>
+      <div class="lens-strip" id="lensStrip"></div>
+      <section class="lens-head"><div><p class="eyebrow" id="lensNumber"></p><h2 id="lensTitle"></h2></div><div class="lens-tools"><button id="eventToggle">EVENTS HIDDEN</button><button id="resetChart">RESET VIEW</button></div></section>
+      <section class="chart-card-pro">
+        <div class="chart-toolbar"><div id="symbolToggles"></div><div class="chart-meta"><span><i></i> NORMALIZED</span><button id="timeCutToggle">LOOK-AHEAD OFF</button></div></div>
+        <div class="chart-wrap"><div class="y-axis"><span>+100%</span><span>+50%</span><span>0%</span><span>-25%</span></div><svg id="marketChart" viewBox="0 0 900 390" role="img" aria-label="정규화된 자산 가격 비교 차트"></svg><div class="chart-tooltip" id="chartTooltip"></div></div>
+        <div class="chart-footer"><span id="chartPeriod">2022-10-31</span><p>Yahoo Finance·FRED 월말 실측치 · 기준일 100 · 수익률은 선행성 순위가 아닙니다.</p><span>2023-08-31</span></div>
+      </section><section class="lens-supplement" id="lensSupplement"></section>
+      <section class="observation-section"><div class="observation-head"><div><p class="eyebrow">OBSERVE BEFORE EXPLAINING</p><h2>차트에서 먼저 확인하세요.</h2></div><div class="concept-badges"><span>LEADING</span><span>RELATIVE STRENGTH</span><span>DIVERGENCE</span></div></div><div class="observation-layout"><ol class="questions" id="questions"></ol><div class="answer-box"><div class="answer-type"><button class="active" data-answer-type="fact">FACT</button><button data-answer-type="inference">INFERENCE</button></div><textarea id="caseAnswer" placeholder="차트에서 직접 확인한 사실부터 적어보세요."></textarea><div class="answer-actions"><span id="saveStatus">자동 저장</span><button id="submitAnswer">관찰 제출하기 →</button></div></div></div></section>
+      <section class="coach-feedback locked" id="coachFeedback"><div class="feedback-lock">답변을 제출하면 코치의 피드백을 볼 수 있습니다.</div></section>
+      <section class="explanation locked" id="explanation"><div class="explanation-cover"><span>해설은 관찰 이후에만 공개됩니다.</span><button id="revealExplanation" disabled>해설 열기</button></div></section>
+      <div class="lens-next"><button id="prevLens">← 이전 Lens</button><div><span>다음 질문</span><b id="nextPreview"></b></div><button id="nextLens">다음 Lens →</button></div>
+    </div>
+    <div id="secondaryView" hidden></div>
+  </section>
+
+  <aside class="practice-right">
+    <div class="right-tabs"><button class="active" data-right="notes">CASE NOTES</button><button data-right="signals">SIGNALS</button></div>
+    <div id="rightPanel"><section><p class="side-label">FACTS OBSERVED <span class="badge fact">FACT</span></p><div class="note-list" id="factNotes"><p>아직 기록된 Fact가 없습니다.</p></div></section><section><p class="side-label">CURRENT HYPOTHESES <span class="badge inference">INFERENCE</span></p><div class="note-list" id="inferenceNotes"><p>아직 기록된 Inference가 없습니다.</p></div></section><section><p class="side-label">KEY SIGNALS</p><div class="signal-stack" id="signalStack"></div></section><section><p class="side-label">CASE MEMO</p><textarea id="caseMemo" placeholder="수정된 생각, 실수, 다음에 볼 것..."></textarea></section></div>
+  </aside>
+</main>
+<script src="data.js"></script><script src="app.js"></script><script src="practice.js"></script></body></html>
