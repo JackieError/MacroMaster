@@ -56,11 +56,21 @@ curl -s "https://fred.stlouisfed.org/graph/fredgraph.csv?id=FEDFUNDS"
 | `VIXCLS` | VIX 변동성지수 | 일 |
 | `GFDEGDQ188S` | 연방부채/GDP | 분기 |
 | `A091RC1Q027SBEA` | 연방정부 이자지출 | 분기 |
+| `CSUSHPINSA` | 케이스-실러 미국 주택가격지수 (전국, NSA) | 월 |
+| `DEXJPUS` | 엔/달러 환율 | 일 |
+| `IRSTCI01JPM156N` | 일본 콜금리 (정책금리 대용) | 월 |
+| `TRESEGKRM052N` | 한국 외환보유고 (금 제외, 백만 달러 단위) | 월 |
 
 ### Yahoo Finance (`data/yahoo/`)
 
 chart API를 `curl`로 직접 호출. `^GSPC`(S&P500), `^KS11`(코스피), `^KQ11`(코스닥),
-`^SOX`(필라델피아 반도체), `EEM`(신흥국 ETF), `GC=F`(금), `BTC-USD`(비트코인).
+`^SOX`(필라델피아 반도체), `EEM`(신흥국 ETF), `GC=F`(금), `BTC-USD`(비트코인),
+`005930.KS`(삼성전자), `000660.KS`(SK하이닉스), `^N225`(닛케이225).
+
+> Yahoo chart API를 `curl`로 직접 호출할 땐 `-A "Mozilla/5.0 ..."`로 User-Agent를 지정해야
+> 한다 — 없으면 429가 뜬다. 장기간 월간 데이터는 `range=max&interval=1mo`가 아니라
+> `period1`/`period2`(유닉스 타임스탬프)를 명시해서 받아야 한다 — `range=max` 방식은
+> 최근 구간이 분기 단위로 뭉개지는 문제가 있었다(실제로 `^N225`에서 발견).
 
 ### Stooq (`data/stooq/`)
 
@@ -71,8 +81,9 @@ chart API를 `curl`로 직접 호출. `^GSPC`(S&P500), `^KS11`(코스피), `^KQ1
 이미 검증한 것들이다. 같은 시도를 반복하지 않는다.
 
 - **`DATA_GO_KR_KEY`로 코스피/코스닥 지수는 못 받는다** — 지수 API가 403(미승인)이다.
-  개별 종목 일별시세(`GetStockSecuritiesInfoService/getStockPriceInfo`)는 정상 작동한다.
-  지수는 Yahoo Finance로만 확보 가능.
+  개별 종목 일별시세(`GetStockSecuritiesInfoService/getStockPriceInfo`)는 정상 작동하지만,
+  삼성전자·SK하이닉스도 결국 **Yahoo Finance(`005930.KS`/`000660.KS`)가 더 간단해서 그쪽을 썼다**
+  — data.go.kr 개별종목 엔드포인트는 검증만 하고 실사용은 안 함.
   (PROJECT_STATE.md의 "섹터 지수 API 별도 활용신청 필요"와 같은 맥락)
 - **정적 페이지라 런타임 API 호출이 없다.** 원본 Artifact도 CSP 샌드박스로 외부 fetch가 막힌다.
   Pages 배포본에서 `/api/*`가 안 되는 것과 같다.
