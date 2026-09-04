@@ -8,6 +8,7 @@
 | Data | `harnesses/data.md` | API, 캐시, 스키마, 품질 검사 |
 | Telegram | `harnesses/telegram.md` | 메시지 수집·중복 제거·분위기 |
 | Learning | `harnesses/learning.md` | 초보 학습 흐름과 복기 UX |
+| Curriculum | `harnesses/curriculum.md` | `curriculum/` 매크로 사례 학습 페이지 |
 | Delivery | `harnesses/delivery.md` | 테스트, GitHub, Pages, 운영 |
 
 ## 명령

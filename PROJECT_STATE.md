@@ -1,6 +1,6 @@
 # Project state
 
-최종 갱신: 2026-08-27
+최종 갱신: 2026-08-28
 
 ## 구현 완료
 
@@ -22,11 +22,27 @@
 
 ## 현재 배포
 
-- `https://jackieerror.github.io/market-study-dashboard/`
-- `https://jackieerror.github.io/MacroMaster/`
+- `https://jackieerror.github.io/market-study-dashboard/` — Market Note 대시보드
+- `https://jackieerror.github.io/MacroMaster/` — 같은 대시보드
+- `https://jackieerror.github.io/MacroMaster/curriculum/` — 매크로 사례 학습 커리큘럼
 - API: `https://market-note-api.onrender.com`
 
-두 저장소에는 동일한 정적 앱 코드가 들어 있다. API 키와 `market_note.db`는 포함되지 않는다.
+API 키와 `market_note.db`는 포함되지 않는다.
+
+**두 저장소는 더 이상 동일하지 않다.** `curriculum/`은 MacroMaster에만 있으므로
+`./scripts/harness deploy`(양쪽에 같은 main 푸시)를 쓰면 커리큘럼이 지워진다.
+`harnesses/delivery.md`의 경고를 따른다.
+
+## 매크로 커리큘럼 (`curriculum/`)
+
+지표를 하나씩 설명하는 글로서리가 아니라, 실제로 있었던 국면을 실측 데이터로 다시 짚는 학습 페이지다.
+자세한 규칙은 `harnesses/curriculum.md`, 사례·데이터 목록은 `curriculum/README.md` 참고.
+
+- 카테고리별로 나뉜 사례들을 해시 라우팅 SPA로 제공 (사이드바 아코디언 + 용어사전 슬라이드오버)
+- 각 사례 = 실측 차트 + 이벤트 마커 + 서술 + "실전에서 이렇게 읽는다"
+  + 4단 심층 아코디언(메커니즘 / 패턴이 깨졌던 순간들 / 반론 / 지금 어떤 국면인가)
+- 데이터 원본은 `curriculum/data/` (FRED 공개 CSV, Yahoo Finance, Stooq)
+- 원본 작업본 Artifact: https://claude.ai/code/artifact/c421b29c-d3f0-4d98-8020-6240d7bf8ee0
 
 ## 진행해야 할 핵심 작업
 
